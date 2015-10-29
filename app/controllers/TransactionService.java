@@ -6,7 +6,7 @@ import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import play.*;
 import play.libs.Json;
@@ -80,11 +80,16 @@ public class TransactionService extends Controller {
         } else {
             Double sum = t.amount;
 
-            // This could be dangerous in case someone has the great
-            // idea to put circular referencing parent IDs into a Transaction.
+            // prevent circular references
+            HashSet<Long> ids = new HashSet<Long>();
+            ids.add(t.id);
             while(t.parentId != null) {
                 t = Transaction.find.byId(t.parentId);
-                sum += t.amount;
+                if(!ids.add(t.id)) {
+                    break;
+                } else {
+                    sum += t.amount;
+                }
             }
             ObjectNode result = Json.newObject();
             result.put("sum", sum);

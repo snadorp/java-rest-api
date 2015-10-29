@@ -196,6 +196,26 @@ public class TransactionServiceTest {
     }
 
     @Test
+    public void callgetSumCircularSuccess() {
+        running(fakeApplication(), new Runnable() {
+                @Override
+                public void run() {
+                    // let's build a nice little endless loop
+                    new Transaction(3.0, "car", 2L).save();
+                    new Transaction(6.0, "car", 3L).save();
+                    new Transaction(1.0, "car", 1L).save();
+
+                    Result result = callAction(controllers.routes.ref.TransactionService.getSum(1));
+                    assertThat(status(result)).isEqualTo(OK);
+                    assertThat(contentType(result)).isEqualTo("application/json");
+                    assertThat(charset(result)).isEqualTo("utf-8");
+                    assertThat(contentAsString(result)).contains("{\"sum\":10.0}");
+
+                }
+            });
+    }
+
+    @Test
     public void callgetSumError() {
         running(fakeApplication(), new Runnable() {
                 @Override
