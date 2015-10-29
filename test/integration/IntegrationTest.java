@@ -46,7 +46,7 @@ public class IntegrationTest {
                         .put(payload)
                         .get();
                     assertThat(r.getStatus()).isEqualTo(OK);
-                    assertThat(r.getBody()).contains("New transaction recorded, thx.");
+                    assertThat(r.getBody()).contains("{\"status\":\"ok\"}");
 
                     // add another transaction with parent
                     path = "/transactionservice/transaction/2";
@@ -57,7 +57,7 @@ public class IntegrationTest {
                         .put(payload)
                         .get();
                     assertThat(r.getStatus()).isEqualTo(OK);
-                    assertThat(r.getBody()).contains("New transaction recorded, thx.");
+                    assertThat(r.getBody()).contains("{\"status\":\"ok\"}");
 
                     // update transaction 1
                     path = "/transactionservice/transaction/1";
@@ -68,7 +68,7 @@ public class IntegrationTest {
                         .put(payload)
                         .get();
                     assertThat(r.getStatus()).isEqualTo(OK);
-                    assertThat(r.getBody()).contains("Updated transaction.");
+                    assertThat(r.getBody()).contains("Transaction updated");
                 }
             });
     }

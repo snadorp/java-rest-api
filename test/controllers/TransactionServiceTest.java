@@ -66,16 +66,16 @@ public class TransactionServiceTest {
                     Result result = callAction(controllers.routes.ref.TransactionService.putTransaction(4), request);
 
                     assertThat(status(result)).isEqualTo(OK);
-                    assertThat(contentType(result)).isEqualTo("text/plain");
+                    assertThat(contentType(result)).isEqualTo("application/json");
                     assertThat(charset(result)).isEqualTo("utf-8");
-                    assertThat(contentAsString(result)).contains("New transaction recorded, thx.");
+                    assertThat(contentAsString(result)).contains("{\"status\":\"ok\"}");
 
                     //recall and it should be updated
                     result = callAction(controllers.routes.ref.TransactionService.putTransaction(4), request);
                     assertThat(status(result)).isEqualTo(OK);
-                    assertThat(contentType(result)).isEqualTo("text/plain");
+                    assertThat(contentType(result)).isEqualTo("application/json");
                     assertThat(charset(result)).isEqualTo("utf-8");
-                    assertThat(contentAsString(result)).contains("Updated transaction.");
+                    assertThat(contentAsString(result)).contains("{\"status\":\"Transaction updated\"}");
                 }
             });
     }
@@ -92,7 +92,7 @@ public class TransactionServiceTest {
                     Result result = callAction(controllers.routes.ref.TransactionService.putTransaction(4), request);
 
                     assertThat(status(result)).isEqualTo(BAD_REQUEST);
-                    assertThat(contentType(result)).isEqualTo("text/plain");
+                    assertThat(contentType(result)).isEqualTo("application/json");
                     assertThat(charset(result)).isEqualTo("utf-8");
                     assertThat(contentAsString(result)).contains("Parent ID not found.");
                 }
@@ -111,9 +111,9 @@ public class TransactionServiceTest {
                     Result result = callAction(controllers.routes.ref.TransactionService.putTransaction(4), request);
 
                     assertThat(status(result)).isEqualTo(OK);
-                    assertThat(contentType(result)).isEqualTo("text/plain");
+                    assertThat(contentType(result)).isEqualTo("application/json");
                     assertThat(charset(result)).isEqualTo("utf-8");
-                    assertThat(contentAsString(result)).contains("New transaction recorded, thx.");
+                    assertThat(contentAsString(result)).contains("{\"status\":\"ok\"}");
                 }
             });
     }
@@ -203,7 +203,7 @@ public class TransactionServiceTest {
 
                     Result result = callAction(controllers.routes.ref.TransactionService.getSum(5));
                     assertThat(status(result)).isEqualTo(BAD_REQUEST);
-                    assertThat(contentType(result)).isEqualTo("text/plain");
+                    assertThat(contentType(result)).isEqualTo("application/json");
                     assertThat(charset(result)).isEqualTo("utf-8");
                     assertThat(contentAsString(result)).contains("Transaction not found");
                 }

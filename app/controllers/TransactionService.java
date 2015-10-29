@@ -29,12 +29,14 @@ public class TransactionService extends Controller {
     public static Result putTransaction(Long id) {
         RequestBody body = request().body();
         Transaction t = Transaction.fromJson(body.asJson());
+        HashMap<String, String> status = new HashMap<String, String>();
         if(t == null) {
             return badRequest("Json body is malformed. Or not even there.");
         } else {
             if(t.parentId != null){
                 if(Transaction.find.byId(t.parentId) == null) {
-                    return badRequest("Parent ID not found.");
+                    status.put("status", "Parent ID not found.");
+                    return badRequest(Json.toJson(status));
                 }
             }
 
@@ -44,11 +46,13 @@ public class TransactionService extends Controller {
                 stored.type = t.type;
                 stored.parentId = t.parentId;
                 stored.save();
-                return ok("Updated transaction.");
+                status.put("status", "Transaction updated");
+                return ok(Json.toJson(status));
             } else {
                 t.id = id;
                 Ebean.save(t);
-                return ok("New transaction recorded, thx.");
+                status.put("status", "ok");
+                return ok(Json.toJson(status));
             }
         }
     }
@@ -66,8 +70,10 @@ public class TransactionService extends Controller {
     // GET /transactionservice/sum/$transaction_id
     public static Result getSum(Long id) {
         Transaction t = Transaction.find.byId(id);
+        HashMap<String, String> status = new HashMap<String, String>();
         if(t == null) {
-            return badRequest("Transaction not found");
+            status.put("status", "Transaction not found");
+            return badRequest(Json.toJson(status));
         } else {
             Double sum = t.amount;
 
