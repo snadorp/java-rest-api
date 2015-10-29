@@ -1,9 +1,8 @@
 package models;
 
-import java.util.*;
+import java.util.List;
 import javax.persistence.*;
 
-import play.data.format.*;
 import play.data.validation.*;
 import play.db.ebean.*;
 import play.libs.Json;
@@ -22,9 +21,11 @@ public class Transaction extends Model{
     public Long id = null;
 
     @Constraints.Required
+    @Column(nullable = false)
     public Double amount = 0.0;
 
     @Constraints.Required
+    @Column(nullable = false)
     public String type = "";
 
     @JsonInclude(Include.NON_NULL)
@@ -48,13 +49,9 @@ public class Transaction extends Model{
         return Json.toJson(this);
     }
 
-    protected void mergeTransaction(Transaction other) {
-
-    }
-
     public static Transaction fromJson(JsonNode json) {
         if(json == null) {
-            return null; //uh yes, Java land!
+            return null;
         } else {
             try {
                 return Json.fromJson(json, Transaction.class);
@@ -64,7 +61,6 @@ public class Transaction extends Model{
                 e.printStackTrace();
                 return null;
             }
-
         }
     }
 
@@ -74,6 +70,6 @@ public class Transaction extends Model{
             .findList();
     }
 
+    //shorthand for `Ebean.find(Transaction.class)`
     public static Finder<Long,Transaction> find = new Finder<Long,Transaction>(Long.class, Transaction.class);
-
 }

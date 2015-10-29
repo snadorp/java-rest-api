@@ -5,8 +5,8 @@
 
 create table transaction (
   id                        bigint not null,
-  amount                    double,
-  type                      varchar(255),
+  amount                    double not null,
+  type                      varchar(255) not null,
   parent_id                 bigint,
   constraint pk_transaction primary key (id))
 ;
