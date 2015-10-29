@@ -71,6 +71,8 @@ public class TransactionService extends Controller {
         } else {
             Double sum = t.amount;
 
+            // This could be dangerous in case someone has the great
+            // idea to put circular referencing parent IDs into a Transaction.
             while(t.parentId != null) {
                 t = Transaction.find.byId(t.parentId);
                 sum += t.amount;
