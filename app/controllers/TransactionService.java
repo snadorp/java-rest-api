@@ -4,6 +4,7 @@ import models.Transaction;
 
 import com.avaje.ebean.Ebean;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +19,9 @@ public class TransactionService extends Controller {
     public static Result getTransaction(Long id) {
         Transaction t = Ebean.find(Transaction.class, id);
         if(t == null) {
-            HashMap<String, String> status = new HashMap<String, String>();
+            ObjectNode status = Json.newObject();
             status.put("status", "Couldn't find transaction.");
-            return badRequest(Json.toJson(status));
+            return badRequest(status);
         } else {
             return ok(t.toJson());
         }
@@ -31,14 +32,14 @@ public class TransactionService extends Controller {
     public static Result putTransaction(Long id) {
         RequestBody body = request().body();
         Transaction t = Transaction.fromJson(body.asJson());
-        HashMap<String, String> status = new HashMap<String, String>();
+        ObjectNode status = Json.newObject();
         if(t == null) {
             return badRequest("Json body is malformed. Or not even there.");
         } else {
             if(t.parentId != null){
                 if(Transaction.find.byId(t.parentId) == null) {
                     status.put("status", "Parent ID not found.");
-                    return badRequest(Json.toJson(status));
+                    return badRequest(status);
                 }
             }
 
@@ -49,12 +50,12 @@ public class TransactionService extends Controller {
                 stored.parentId = t.parentId;
                 stored.save();
                 status.put("status", "Transaction updated");
-                return ok(Json.toJson(status));
+                return ok(status);
             } else {
                 t.id = id;
                 Ebean.save(t);
                 status.put("status", "ok");
-                return ok(Json.toJson(status));
+                return ok(status);
             }
         }
     }
@@ -72,10 +73,10 @@ public class TransactionService extends Controller {
     // GET /transactionservice/sum/$transaction_id
     public static Result getSum(Long id) {
         Transaction t = Transaction.find.byId(id);
-        HashMap<String, String> status = new HashMap<String, String>();
         if(t == null) {
+            ObjectNode status = Json.newObject();
             status.put("status", "Transaction not found");
-            return badRequest(Json.toJson(status));
+            return badRequest(status);
         } else {
             Double sum = t.amount;
 
@@ -85,8 +86,7 @@ public class TransactionService extends Controller {
                 t = Transaction.find.byId(t.parentId);
                 sum += t.amount;
             }
-            //Savy way of creating a fitting output.
-            HashMap<String, Double> result = new HashMap<String, Double>();
+            ObjectNode result = Json.newObject();
             result.put("sum", sum);
             return ok(Json.toJson(result));
         }
