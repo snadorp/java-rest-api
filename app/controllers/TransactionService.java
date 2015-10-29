@@ -18,7 +18,9 @@ public class TransactionService extends Controller {
     public static Result getTransaction(Long id) {
         Transaction t = Ebean.find(Transaction.class, id);
         if(t == null) {
-            return badRequest("Couldn't find transaction.");
+            HashMap<String, String> status = new HashMap<String, String>();
+            status.put("status", "Couldn't find transaction.");
+            return badRequest(Json.toJson(status));
         } else {
             return ok(t.toJson());
         }
