@@ -3,7 +3,6 @@ package models;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.*;
 import org.junit.*;
-import play.libs.Json;
 import static org.fest.assertions.Assertions.*;
 import static play.test.Helpers.*;
 

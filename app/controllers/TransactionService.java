@@ -30,7 +30,7 @@ public class TransactionService extends Controller {
         RequestBody body = request().body();
         Transaction t = Transaction.fromJson(body.asJson());
         if(t == null) {
-            return badRequest("Json body is malformed.");
+            return badRequest("Json body is malformed. Or not even there.");
         } else {
             if(t.parentId != null){
                 if(Transaction.find.byId(t.parentId) == null) {
