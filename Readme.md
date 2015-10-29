@@ -11,3 +11,6 @@ Unit and integration tests can be triggert via `sbt test`.
 
 ## Deploying
 To build a production ready jar run `sbt clean stage`.
+
+## Build Status
+[![Build Status](https://travis-ci.org/snadorp/java-rest-api.svg)](https://travis-ci.org/snadorp/java-rest-api)
