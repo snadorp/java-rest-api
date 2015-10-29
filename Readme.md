@@ -1,7 +1,7 @@
 # Rest API
 
 ## Intro
-This project is based on Java Play 2.2.3.
+This project is based on Java Play 2.2.6.
 
 ## Running
 You can run the project via `sbt run`.
