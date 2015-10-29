@@ -3,3 +3,11 @@ jdk:
   - openjdk7
 scala:
    - 2.10.4
+env:
+- PLAY_VERSION=2.2.3
+
+before_script:
+- wget http://download.playframework.org/releases/play-${PLAY_VERSION}.zip
+- unzip -q play-${PLAY_VERSION}.zip
+script:
+-  sbt test
