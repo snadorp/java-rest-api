@@ -4,7 +4,7 @@ jdk:
 scala:
    - 2.10.4
 env:
-- PLAY_VERSION=2.2.3
+- PLAY_VERSION=2.2.6
 
 before_script:
 - wget https://downloads.typesafe.com/play/2.2.3/play-${PLAY_VERSION}.zip
